@@ -1,0 +1,113 @@
+# ---- OS / Misc ----
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---- Node / JavaScript ----
+node_modules/
+# Build artifacts
+.dist/
+dist/
+build/
+lib/
+.eslintcache
+.npm/
+
+# Logs & diagnostics
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Package managers (lock files are useful; comment out if you want to commit them)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# ---- TypeScript ----
+*.tsbuildinfo
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+.eggs/
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+env/
+.venv/
+venv/
+ENV/
+
+# ---- Environments / Secrets ----
+.env
+.env.*
+!.env.example
+.envrc
+
+# ---- Testing / Coverage / Reports ----
+coverage/
+.nyc_output/
+ junit-report.xml
+
+# ---- Framework / Tool Caches ----
+.cache/
+.next/
+out/
+.vite/
+.storybook-cache/
+.cypress_cache/
+playwright-report/
+allure-results/
+
+# ---- Documentation build (e.g., static site generators) ----
+.site/
+public/
+.temp/
+.tmp/
+
+# ---- Editors / IDE ----
+.vscode/
+.idea/
+*.swp
+*.swo
+*.orig
+
+# ---- Images / Design exports (optional) ----
+# *.psd
+# *.ai
+# *.sketch
+
+# ---- Archives / Packages ----
+*.tgz
+*.gz
+*.zip
+*.7z
+
+# ---- Backups / Patches ----
+*.bak
+*.rej
+*.patch
+
+# ---- Misc ----
+*.pid
+*.pid.lock
+
+# ---- Optional: Uncomment if using Storybook static export ----
+# storybook-static/
+
+# ---- Optional: Uncomment if using Parcel ----
+# .parcel-cache/
+
+# ---- Optional: Uncomment if using Next.js standalone output ----
+# .next/standalone/
+
+# End of .gitignore
