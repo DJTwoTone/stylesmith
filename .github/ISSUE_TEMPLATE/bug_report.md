@@ -1,28 +1,27 @@
 ---
 name: Bug report
-about: Report a bug to help us improve
-labels: bug
+about: Report a defect impacting expected behavior or determinism
+labels: type:bug
 ---
 
 **Describe the bug**
-A clear and concise description of what the bug is.
+Clear, concise description (what vs expected).
 
 **Steps to reproduce**
 1. Go to '...'
-2. Click on '...'
-3. Scroll down to '...'
-4. See error
+2. Click '...'
+3. Observe '...'
 
 **Expected behavior**
-What you expected to happen.
+What you expected.
 
-**Screenshots / Logs**
-If applicable, add screenshots or log snippets to help explain your problem.
+**Screenshots / Logs / Artifacts**
+Attach screenshots, relevant console logs, exported ZIP, or HASHES.txt if determinism issue.
 
-**Environment (please complete the following information):**
-- OS: [e.g. Windows 11]
-- Browser / Runtime: [e.g. Chrome 125, Node 20, Python 3.12]
-- Version / Commit: [e.g. abc123]
+**Environment**
+- OS:
+- Browser / Runtime (incl. versions):
+- App Version / Commit Hash:
 
-**Additional context**
-Add any other context about the problem here.
+**Additional context / Suspected root cause**
+Optional hypotheses, related issues, or notes.
