@@ -1,0 +1,49 @@
+{
+  "name": "stylesmith",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Local-first deterministic CSS design system generator (tokens → utilities → components → docs/export).",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --ext .ts,.tsx",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write .",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "engines": {"node": ">=18.18.0"},
+  "dependencies": {
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "zustand": "4.5.2",
+    "localforage": "1.10.0",
+    "jszip": "3.10.1",
+    "nanoid": "5.0.7",
+    "zod": "3.23.8",
+    "classnames": "2.5.1"
+  },
+  "devDependencies": {
+    "typescript": "5.4.5",
+    "vite": "5.2.8",
+    "@vitejs/plugin-react": "4.2.1",
+    "eslint": "8.57.0",
+    "@typescript-eslint/parser": "7.2.0",
+    "@typescript-eslint/eslint-plugin": "7.2.0",
+    "eslint-plugin-react-hooks": "4.6.0",
+    "eslint-plugin-react-refresh": "0.4.5",
+    "prettier": "3.2.5",
+    "eslint-config-prettier": "9.1.0",
+    "vitest": "1.5.0",
+    "@vitest/coverage-v8": "1.5.0",
+    "jsdom": "24.0.0",
+    "@types/node": "20.11.30",
+    "@types/react": "18.2.66",
+    "@types/react-dom": "18.2.22",
+    "postcss": "8.4.38",
+    "cssnano": "6.1.2",
+    "postcss-nesting": "12.1.0"
+  }
+}
