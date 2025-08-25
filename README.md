@@ -57,7 +57,7 @@ Refer to `docs/PRD.md` & `docs/DevelopmentPlan.md` for full product & engineerin
 Sorted token keys, canonical utility family ordering, stable variant ordering, locked dependency versions, stable minification config, `stableStringify` + SHA-256 for artifact hashes.
 
 ## License
-TBD (add license selection before public release).
+Proprietary. All rights reserved. Not open source. See `LICENSE`.
 
 ---
 Scaffold WIP – expanding per work packages.
