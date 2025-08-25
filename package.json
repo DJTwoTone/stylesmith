@@ -12,7 +12,8 @@
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
     "test": "vitest run",
-    "test:watch": "vitest"
+  "test:watch": "vitest",
+  "seed:issues": "node scripts/generate-issues.mjs"
   },
   "engines": {"node": ">=18.18.0"},
   "dependencies": {
