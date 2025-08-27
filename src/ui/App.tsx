@@ -3,18 +3,19 @@ import styles from './App.module.css';
 import { useStore } from '../state/store';
 import { TokenTable } from './components/TokenTable';
 import { TypographyEditor } from './components/TypographyEditor';
+import { Landing } from './pages/Landing';
 
 export const App: React.FC = () => {
-  const { currentProject, createProject } = useStore();
+  const { currentProject } = useStore();
+  const [entered, setEntered] = React.useState(false);
+  if (!entered) return <Landing onEnter={() => setEntered(true)} />;
   return (
-  <div className={styles.appRoot}>
+    <div className={styles.appRoot}>
       <h1>StyleSmith</h1>
-      {!currentProject && (
-        <button onClick={() => createProject('My Project')}>Create Project</button>
-      )}
+      <p className={styles.projectMeta}>Project: {currentProject?.name}</p>
+      {!currentProject && <p>No project yet.</p>}
       {currentProject && (
         <>
-      <p className={styles.projectMeta}>Project: {currentProject.name}</p>
           <TokenTable category="colors" />
           <TokenTable category="spacing" />
           <TokenTable category="radii" />
