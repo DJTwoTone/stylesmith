@@ -15,6 +15,9 @@ describe('Token store (WP-01)', () => {
     const res = getState().addToken('colors', 'primary', '#000000');
     expect(res.ok).toBe(false);
     expect(res.errors?.some(e => e.code === 'duplicate_name')).toBe(true);
+  const dupe = res.errors?.find(e => e.code === 'duplicate_name');
+  expect(dupe?.details?.name).toBe('primary');
+  expect(dupe?.details?.expected).toMatch(/Unique token/);
   });
   it('validates bad name', () => {
     const res = getState().addToken('colors', '1bad', '#111111');
@@ -38,6 +41,8 @@ describe('Token store (WP-01)', () => {
     const res = getState().renameToken('colors', 'accent', 'brand-primary');
     expect(res.ok).toBe(false);
     expect(res.errors?.some(e => e.code === 'duplicate_name')).toBe(true);
+  const dupe = res.errors?.find(e => e.code === 'duplicate_name');
+  expect(dupe?.details?.name).toBe('brand-primary');
   });
   it('batch adds tokens atomically', () => {
     const beforeCount = Object.keys(getState().currentProject!.tokens.spacing).length;

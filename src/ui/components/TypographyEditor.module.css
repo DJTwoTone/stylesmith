@@ -1,0 +1,99 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+.fieldLabel {
+  font-weight: 500;
+}
+.fieldHint {
+  font-size: 12px;
+  color: #555;
+}
+.section {
+  border: 1px solid #ddd;
+  padding: 16px;
+  border-radius: 8px;
+  margin-top: 32px;
+}
+.heading {
+  margin-top: 0;
+}
+.sectionIntro {
+  font-size: 13px;
+  color: #555;
+}
+.scaleControls {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.input {
+  padding: 4px;
+}
+.inputWide {
+  padding: 4px;
+  min-width: 240px;
+}
+.applyRow {
+  align-self: flex-end;
+  display: flex;
+  gap: 8px;
+}
+.scalePreview {
+  margin-top: 20px;
+}
+.subheading {
+  margin: 12px 0 4px;
+}
+.scaleTable {
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.scaleTable th {
+  text-align: left;
+  padding: 4px;
+}
+.scaleTable td {
+  padding: 4px;
+}
+.scaleTableHeadCell {
+  text-align: left;
+  padding: 4px;
+}
+.scaleTableCell {
+  padding: 4px;
+}
+.headingsMapping {
+  margin-top: 24px;
+}
+.mappingGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.mappingItem {
+  display: flex;
+  flex-direction: column;
+}
+.mappingLabel {
+  font-size: 12px;
+  font-weight: 600;
+}
+.mappingSelect {
+  padding: 4px;
+}
+.mappingActions {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+}
+.statusRegion {
+  margin-top: 8px;
+}
+.statusErrors {
+  color: crimson;
+  margin: 0;
+  padding-left: 18px;
+}

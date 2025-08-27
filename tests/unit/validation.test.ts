@@ -24,9 +24,11 @@ describe('Token Validation (granular)', () => {
         expect(err).toBeNull();
       });
     });
-    it('rejects invalid hex color', () => {
-      const err = validateTokenValue('colors', '#zzzzzz');
+    it('rejects invalid hex color with details', () => {
+      const err = validateTokenValue('colors', '#zzzzzz', 'brand');
       expect(err?.code).toBe('invalid_value');
+      expect(err?.details?.name).toBe('brand');
+      expect(err?.details?.pattern).toBeDefined();
     });
     it('validates spacing units', () => {
       expect(validateTokenValue('spacing', '4px')).toBeNull();
@@ -67,7 +69,7 @@ describe('Token Validation (granular)', () => {
 
   describe('validateTokenFull', () => {
     it('returns byField mapping', () => {
-      const report = validateTokenFull('spacing', 'bad_name', '10');
+  const report = validateTokenFull('spacing', 'bad_name', '10');
       expect(report.ok).toBe(false);
       expect(report.byField.name?.length).toBeGreaterThan(0);
       expect(report.byField.value?.length).toBeGreaterThan(0);

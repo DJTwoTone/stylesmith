@@ -1,5 +1,5 @@
 # src/domain/tokens/validation.ts
-<!-- source-hash: a3a2d02a27733df719e5ecf6c25d1a7a4577850f72d99eea49926bfd2246845c -->
+<!-- source-hash: 9888d9124b2b73a0de1183ecb1ed3c9e3742c6053bf76d0169899c3b368eb790 -->
 
 ## Purpose
 Provide comprehensive token validation, normalization, heuristics, and insertion preparation utilities.

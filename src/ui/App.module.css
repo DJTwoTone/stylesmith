@@ -1,0 +1,6 @@
+.appRoot {
+  padding: var(--ss-space-6);
+}
+.projectMeta {
+  color: var(--ss-color-text-muted);
+}

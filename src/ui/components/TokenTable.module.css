@@ -1,0 +1,151 @@
+.container {
+  margin-bottom: 32px;
+}
+.title {
+  text-transform: capitalize;
+}
+.table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 14px;
+}
+.th {
+  text-align: left;
+  border-bottom: 1px solid #ccc;
+  padding: 4px;
+}
+.thActions {
+  border-bottom: 1px solid #ccc;
+  padding: 4px;
+}
+.td {
+  padding: 4px;
+}
+.form {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+}
+.column {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.columnValue {
+  display: flex;
+  flex-direction: column;
+  flex: 2;
+}
+.input {
+  flex: 1;
+  border: 1px solid #ccc;
+  padding: 4px;
+  border-radius: 4px;
+}
+.inputError {
+  border: 1px solid crimson;
+}
+.errorList {
+  list-style: disc;
+  padding-left: 16px;
+  margin: 4px 0 0;
+  color: crimson;
+  font-size: 12px;
+}
+.warningList {
+  list-style: disc;
+  padding-left: 16px;
+  margin: 4px 0 0;
+  color: #a86b00;
+  font-size: 12px;
+}
+.suggestion {
+  margin-top: 4px;
+}
+.suggestionButton {
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.normalize {
+  margin-top: 4px;
+}
+.normalizeButton {
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.expectedHint {
+  opacity: 0.85;
+}
+.submitRegion {
+  margin-top: 8px;
+}
+.submitErrors {
+  color: crimson;
+  margin: 0;
+  padding-left: 18px;
+}
+.batchToggle {
+  margin-top: 16px;
+}
+.batchPanel {
+  margin-top: 12px;
+  border: 1px solid #ccc;
+  padding: 12px;
+  border-radius: 8px;
+}
+.batchHint {
+  margin: 0 0 8px;
+  font-size: 12px;
+  color: #555;
+}
+.textarea {
+  width: 100%;
+  font-family: monospace;
+  font-size: 12px;
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.batchPreview {
+  margin-top: 8px;
+}
+.batchPreviewLabel {
+  font-size: 12px;
+}
+.batchPreviewTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+  margin-top: 4px;
+}
+.batchPreviewHead th {
+  text-align: left;
+  padding: 4px;
+}
+.batchPreviewHeadCell {
+  text-align: left;
+  padding: 4px;
+}
+.batchPreviewRowError {
+  background: #ffe9e9;
+}
+.batchPreviewCell {
+  padding: 4px;
+}
+.batchSummary {
+  margin-top: 6px;
+  font-size: 12px;
+}
+.batchActions {
+  margin-top: 8px;
+  display: flex;
+  gap: 8px;
+}
+.batchErrors {
+  color: crimson;
+  margin: 8px 0 0;
+  padding-left: 18px;
+  font-size: 12px;
+}

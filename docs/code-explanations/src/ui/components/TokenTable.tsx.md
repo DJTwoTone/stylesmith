@@ -1,5 +1,5 @@
 # src/ui/components/TokenTable.tsx
-<!-- source-hash: 68a72bb2cca921903556b84d27e0abcb9b346ac34d9435934fc5102bd1082664 -->
+<!-- source-hash: b39f30cb759255dde976dce705517be77636c0a5f7af5b14d0a1f08ce67e6cc5 -->
 
 ## Purpose
 Editable table for a single token category (list, add, update, rename via edit form, delete).

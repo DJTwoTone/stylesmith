@@ -1,7 +1,7 @@
 # StyleSmith
 
 <!-- DOCS_COVERAGE_START -->
-![Docs Coverage](https://img.shields.io/badge/docs--coverage-6%2F6%20(100%25)-brightgreen)
+![Docs Coverage](https://img.shields.io/badge/docs--coverage-12%2F14%20(86%25)-green)
 <!-- DOCS_COVERAGE_END -->
 
 Local-first deterministic CSS design system generator. Define tokens visually, toggle a constrained utility layer, optionally include minimal component recipes, and export stable, byte-for-byte reproducible CSS artifacts (tokens, utilities, components, reset, docs, bundle) with hashing for CI validation.

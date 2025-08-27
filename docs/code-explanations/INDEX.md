@@ -15,6 +15,7 @@ Canonical list of documented source files (auto-maintained manually until script
 ## Domain / Tokens
 - [src/domain/tokens/validation.ts](src/domain/tokens/validation.ts.md)
 - [src/domain/tokens/derived.ts](src/domain/tokens/derived.ts.md)
+ - [Validation & Error Codes](../../ValidationErrors.md)
 
 ## Domain / Typography
 - [src/domain/typography/scale.ts](src/domain/typography/scale.ts.md)

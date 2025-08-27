@@ -1,5 +1,5 @@
 # src/state/store.ts
-<!-- source-hash: 3fb0f36e9a28a60ce584c8d489eeba20cecdd002115095da5b892f47753775f3 -->
+<!-- source-hash: 874732eb9b63987b5d7e38fb31b15fb22bc50735ffefd892c1199c332a798e2a -->
 
 ## Purpose
 Zustand store managing single project, token CRUD (add/update/delete/rename/batch), typography scale + headings, and prefix groundwork.

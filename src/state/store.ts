@@ -36,7 +36,7 @@ export interface Project extends ProjectMeta {
 function validateToken(category: TokenCategories, name: string, value: string): ValidationError[] {
   const errs: ValidationError[] = [];
   const nameErr = validateTokenName(name); if (nameErr) errs.push(nameErr);
-  const valErr = validateTokenValue(category as TokenCategory, value); if (valErr) errs.push(valErr);
+  const valErr = validateTokenValue(category as TokenCategory, value, name); if (valErr) errs.push(valErr);
   return errs;
 }
 
@@ -75,7 +75,7 @@ export const useStore = create<StoreState>((set) => ({
       if (!state.currentProject) return state;
       const errors = validateToken(category, name, value);
       if (state.currentProject.tokens[category as keyof TokensState][name]) {
-        errors.push({ code: 'duplicate_name', field: 'name', message: 'Duplicate name' });
+        errors.push({ code: 'duplicate_name', field: 'name', message: 'Duplicate name', details: { name, value, expected: 'Unique token name per category' } });
       }
       if (errors.length) {
         result = { ok: false, errors };
@@ -94,7 +94,7 @@ export const useStore = create<StoreState>((set) => ({
       if (!state.currentProject) return state;
       const errors = validateToken(category, name, value);
       if (!state.currentProject.tokens[category as keyof TokensState][name]) {
-        errors.push({ code: 'not_found', field: 'general', message: 'Token not found' });
+        errors.push({ code: 'not_found', field: 'general', message: 'Token not found', details: { name } });
       }
       if (errors.length) {
         result = { ok: false, errors };
@@ -113,9 +113,9 @@ export const useStore = create<StoreState>((set) => ({
       if (!state.currentProject) return state;
       const tokens = state.currentProject.tokens[category as keyof TokensState];
       const errors: ValidationError[] = [];
-      if (!tokens[oldName]) errors.push({ code: 'not_found', field: 'general', message: 'Original token not found' });
+  if (!tokens[oldName]) errors.push({ code: 'not_found', field: 'general', message: 'Original token not found', details: { name: oldName } });
       const nameErr = validateTokenName(newName); if (nameErr) errors.push(nameErr);
-      if (tokens[newName] && oldName !== newName) errors.push({ code: 'duplicate_name', field: 'name', message: 'Name already exists' });
+  if (tokens[newName] && oldName !== newName) errors.push({ code: 'duplicate_name', field: 'name', message: 'Name already exists', details: { name: newName, expected: 'Unique token name per category' } });
       if (errors.length) { result = { ok: false, errors }; return state; }
       const project = { ...state.currentProject };
       const newCat = { ...tokens } as Record<string,string>;
@@ -136,7 +136,7 @@ export const useStore = create<StoreState>((set) => ({
       for (const [n, v] of Object.entries(entries)) {
         validateToken(category, n, v).forEach(e => errors.push(e));
         if (state.currentProject.tokens[category as keyof TokensState][n]) {
-          errors.push({ code: 'duplicate_name', field: 'name', message: `Duplicate existing: ${n}` });
+          errors.push({ code: 'duplicate_name', field: 'name', message: `Duplicate existing: ${n}` , details: { name: n, expected: 'Unique token name per category' }});
         }
       }
       if (errors.length) { result = { ok: false, errors }; return state; }

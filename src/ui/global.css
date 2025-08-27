@@ -1,0 +1,88 @@
+/* Global StyleSmith base styles & design tokens */
+:root {
+  /* Color tokens */
+  --ss-color-text-muted: #555;
+  --ss-color-border: #ccc;
+  --ss-color-border-subtle: #ddd;
+  --ss-color-danger: crimson;
+  --ss-color-warning: #a86b00;
+  --ss-color-bg-error: #ffe9e9;
+
+  /* Spacing scale */
+  --ss-space-1: 4px;
+  --ss-space-1_5: 6px;
+  --ss-space-2: 8px;
+  --ss-space-3: 12px;
+  --ss-space-4: 16px;
+  --ss-space-5: 20px;
+  --ss-space-6: 24px;
+  --ss-space-8: 32px;
+
+  /* Font sizes */
+  --ss-fs-xs: 11px;
+  --ss-fs-sm: 12px;
+  --ss-fs-md: 13px;
+  --ss-fs-base: 14px;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+body {
+  font-family: system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.4;
+}
+
+/* Utilities */
+.text-muted {
+  color: var(--ss-color-text-muted);
+}
+.font-xs {
+  font-size: var(--ss-fs-xs);
+}
+.font-sm {
+  font-size: var(--ss-fs-sm);
+}
+.font-md {
+  font-size: var(--ss-fs-md);
+}
+.font-base {
+  font-size: var(--ss-fs-base);
+}
+.border {
+  border: 1px solid var(--ss-color-border);
+}
+.border-subtle {
+  border: 1px solid var(--ss-color-border-subtle);
+}
+.round-sm {
+  border-radius: 4px;
+}
+.round-md {
+  border-radius: 8px;
+}
+.bg-error {
+  background: var(--ss-color-bg-error);
+}
+
+/* Table normalization */
+.table-reset {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* Visually-hidden helper */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}

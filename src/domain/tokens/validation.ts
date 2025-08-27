@@ -12,7 +12,20 @@ export type ValidationErrorCode =
 
 export type ValidationSeverity = 'error' | 'warning';
 
-export interface ValidationError { code: ValidationErrorCode; field?: 'name' | 'value' | 'general'; message: string; severity?: ValidationSeverity; }
+export interface ValidationError {
+  code: ValidationErrorCode;
+  field?: 'name' | 'value' | 'general';
+  message: string;
+  severity?: ValidationSeverity;
+  /**
+   * Structured details for actionable UI (GH-021):
+   * name: token name involved (if applicable)
+   * value: offending value (if applicable)
+   * expected: human description of expectation / pattern semantics
+   * pattern: raw regex source where relevant
+   */
+  details?: { name?: string; value?: string; expected?: string; pattern?: string };
+}
 
 // Simple value validators; can be extended per category later
 const valueValidators: Record<string, { re: RegExp; help: string }> = {
@@ -24,7 +37,18 @@ const valueValidators: Record<string, { re: RegExp; help: string }> = {
 
 export function validateTokenName(name: string): ValidationError | null {
   if (!TOKEN_NAME_REGEX.test(name)) {
-  return { code: 'invalid_name', field: 'name', message: 'Name must start with a lowercase letter and contain only lowercase letters, digits, or hyphens.', severity: 'error' };
+    return {
+      code: 'invalid_name',
+      field: 'name',
+      message: `Invalid token name "${name}". Must match pattern ^[a-z][a-z0-9-]*$ (kebab-case, start with lowercase letter).`,
+      severity: 'error',
+      details: {
+        name,
+        value: name,
+        expected: 'kebab-case, start with lowercase letter; lowercase letters, digits, hyphens only',
+        pattern: TOKEN_NAME_REGEX.source,
+      },
+    };
   }
   return null;
 }
@@ -37,10 +61,21 @@ const CATEGORY_KEY_MAP: Record<TokenCategory, string> = {
   shadows: 'shadow',
 };
 
-export function validateTokenValue(category: TokenCategory, value: string): ValidationError | null {
+export function validateTokenValue(category: TokenCategory, value: string, tokenName?: string): ValidationError | null {
   const validator = valueValidators[CATEGORY_KEY_MAP[category]];
   if (validator && !validator.re.test(value)) {
-  return { code: 'invalid_value', field: 'value', message: `Invalid ${category} token value. ${validator.help}`, severity: 'error' };
+    return {
+      code: 'invalid_value',
+      field: 'value',
+      message: `Invalid ${category} token value for "${tokenName ?? '(unnamed)'}": "${value}". ${validator.help}`,
+      severity: 'error',
+      details: {
+        name: tokenName,
+        value,
+        expected: validator.help.replace(/^Expect /i, '').replace(/\.$/, ''),
+        pattern: validator.re.source,
+      },
+    };
   }
   return null;
 }
@@ -64,7 +99,7 @@ export function validateBatch(category: TokenCategory, entries: Record<string,st
     }
     seen.add(n);
   const nameErr = validateTokenName(n); if (nameErr) errors.push(nameErr);
-  const valueErr = validateTokenValue(category, entries[n]); if (valueErr) errors.push(valueErr);
+  const valueErr = validateTokenValue(category, entries[n], n); if (valueErr) errors.push(valueErr);
   }
   if (errors.length) return { ok: false, errors };
   return { ok: true };
@@ -95,7 +130,7 @@ function heuristicNameWarnings(name: string): ValidationError[] {
 export function validateTokenFull(category: TokenCategory, name: string, value: string, opts?: ValidateTokenOptions): TokenValidationReport {
   const errors: ValidationError[] = [];
   const nameErr = validateTokenName(name); if (nameErr) errors.push(nameErr);
-  const valueErr = validateTokenValue(category, value); if (valueErr) errors.push(valueErr);
+  const valueErr = validateTokenValue(category, value, name); if (valueErr) errors.push(valueErr);
   if (opts?.includeHeuristics) {
     heuristicNameWarnings(name).forEach(w => errors.push(w));
   }
