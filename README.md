@@ -1,5 +1,9 @@
 # StyleSmith
 
+<!-- DOCS_COVERAGE_START -->
+![Docs Coverage](https://img.shields.io/badge/docs--coverage-6%2F6%20(100%25)-brightgreen)
+<!-- DOCS_COVERAGE_END -->
+
 Local-first deterministic CSS design system generator. Define tokens visually, toggle a constrained utility layer, optionally include minimal component recipes, and export stable, byte-for-byte reproducible CSS artifacts (tokens, utilities, components, reset, docs, bundle) with hashing for CI validation.
 
 ## Vision
@@ -33,8 +37,12 @@ Open http://localhost:5173 (default Vite port).
 - test / test:watch: Vitest unit/integration
 - lint / typecheck / format
 
-## Early Module Stubs
-Implemented: stableStringify + sha256 hashing utilities (foundation for deterministic artifact hashing).
+## Early Module Stubs / Implemented
+Core implemented so far:
+- Token CRUD + validation (with heuristics, normalization, unique name suggestions)
+- Typography scale (virtual font size tokens)
+- Utilities engine: fontSize, spacing, color families (deterministic ordering)
+- Determinism snapshot tests, hashing primitives (stableStringify + sha256)
 
 ## Planned Artifacts
 tokens.css · utilities.css · components/*.css (or aggregated) · reset.css (optional) · style.css (imports orchestrator) · style.bundle.css (minified bundle) · docs/ site · HASHES.txt.
@@ -54,7 +62,7 @@ Refer to `docs/PRD.md` & `docs/DevelopmentPlan.md` for full product & engineerin
 3. Ensure: types clean, lint passes, tests (add at least one), determinism unaffected unless intentional.
 
 ## Determinism Strategy
-Sorted token keys, canonical utility family ordering, stable variant ordering, locked dependency versions, stable minification config, `stableStringify` + SHA-256 for artifact hashes.
+Sorted token keys; canonical utility family ordering (['fontSize','spacing','color',...]); stable variant ordering; locked dependency versions; stable minification config; `stableStringify` + SHA-256 for artifact hashes.
 
 ## License
 Proprietary. All rights reserved. Not open source. See `LICENSE`.

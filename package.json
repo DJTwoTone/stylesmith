@@ -13,7 +13,11 @@
     "format": "prettier --write .",
     "test": "vitest run",
   "test:watch": "vitest",
-  "seed:issues": "node scripts/generate-issues.mjs"
+  "seed:issues": "node scripts/generate-issues.mjs",
+  "doc:stubs": "tsx scripts/generate-doc-stubs.mts",
+  "doc:hash:update": "tsx scripts/update-doc-hashes.mts",
+  "doc:check": "tsx scripts/check-doc-coverage.mts",
+  "trace:sync": "tsx scripts/generate-traceability.mts"
   },
   "engines": {"node": ">=18.18.0"},
   "dependencies": {
@@ -27,6 +31,9 @@
     "classnames": "2.5.1"
   },
   "devDependencies": {
+    "glob": "10.4.5",
+    "ts-morph": "22.0.0",
+    "tsx": "4.7.0",
     "typescript": "5.4.5",
     "vite": "5.2.8",
     "@vitejs/plugin-react": "4.2.1",

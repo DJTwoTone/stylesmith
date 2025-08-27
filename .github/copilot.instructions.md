@@ -380,3 +380,7 @@ Any regression of a satisfied P0 acceptance criterion blocks release tagging.
 - Variant: responsive or state prefix addition (e.g., `md:`, `hover:`).
 
 End of StyleSmith-specific instructions.
+
+## Documentation Coverage (Code Explanations)
+
+All `src/**/*.{ts,tsx}` files require a mirrored markdown explanation in `docs/code-explanations/src/...<file>.md` containing: Purpose, High-Level Role, Imports, Exports, Edge Cases, Change Risk (minimum). Each doc must include a `<!-- source-hash: <sha256> -->` comment reflecting the current source file content. Use `npm run doc:stubs` to create missing stubs, `npm run doc:hash:update` after code changes, and `npm run doc:check` (CI-enforced) to validate coverage & hash consistency. Any code change altering behavior/API without matching doc update should block merge.

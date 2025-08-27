@@ -1,15 +1,11 @@
 import { create } from 'zustand';
 import { nanoid } from 'nanoid';
+import { validateTokenName, validateTokenValue, type TokenCategory, type ValidationError } from '../domain/tokens/validation';
+import { generateTypeScale, defaultHeadingsMap, validateHeadingsMap, type TypeScaleConfig, type HeadingsMap } from '../domain/typography/scale';
 
 // --- Token Schemas (WP-01) ---
-const tokenNameRegex = /^[a-z][a-z0-9-]*$/; // CSS custom property compatible (without -- prefix)
-
-export const tokenValueValidators = {
-  color: /^#([0-9a-fA-F]{3,8}|[0-9a-fA-F]{6})$|^rgba?\(/,
-  spacing: /^(\d*\.?\d+)(px|rem|em|%)$/, // basic units
-  radius: /^(\d*\.?\d+)(px|rem|%)$/,
-  shadow: /^.+$/, // TODO refine
-};
+// Legacy regex & validators kept for backward compatibility placeholder (could remove after migration)
+export const tokenValueValidators = { /* deprecated: use validateTokenValue */ } as const;
 
 export type TokenCategories = 'colors' | 'spacing' | 'radii' | 'shadows';
 
@@ -29,23 +25,31 @@ export interface ProjectMeta {
 
 export interface Project extends ProjectMeta {
   tokens: TokensState;
+  prefix?: string; // namespace prefix for utilities (GH-027 groundwork)
+  typography: {
+    scaleConfig: TypeScaleConfig;
+    headingsMap: HeadingsMap;
+  };
 }
 
 // zod schemas for validation
-function validateToken(category: TokenCategories, name: string, value: string): string[] {
-  const errors: string[] = [];
-  if (!tokenNameRegex.test(name)) errors.push('Name invalid');
-  const key = category === 'radii' ? 'radius' : category;
-  const validator = tokenValueValidators[key as keyof typeof tokenValueValidators];
-  if (validator && !validator.test(value)) errors.push('Value invalid');
-  return errors;
+function validateToken(category: TokenCategories, name: string, value: string): ValidationError[] {
+  const errs: ValidationError[] = [];
+  const nameErr = validateTokenName(name); if (nameErr) errs.push(nameErr);
+  const valErr = validateTokenValue(category as TokenCategory, value); if (valErr) errs.push(valErr);
+  return errs;
 }
 
 export interface StoreState {
   currentProject: Project | null;
   createProject: (name: string) => void;
-  addToken: (category: TokenCategories, name: string, value: string) => { ok: boolean; errors?: string[] };
-  updateToken: (category: TokenCategories, name: string, value: string) => { ok: boolean; errors?: string[] };
+  addToken: (category: TokenCategories, name: string, value: string) => { ok: boolean; errors?: ValidationError[] };
+  updateToken: (category: TokenCategories, name: string, value: string) => { ok: boolean; errors?: ValidationError[] };
+  renameToken: (category: TokenCategories, oldName: string, newName: string) => { ok: boolean; errors?: ValidationError[] };
+  batchAddTokens: (category: TokenCategories, entries: Record<string,string>) => { ok: boolean; errors?: ValidationError[] };
+  setPrefix: (prefix: string | undefined) => void;
+  updateTypeScale: (partial: Partial<TypeScaleConfig>) => void;
+  setHeadingsMap: (map: HeadingsMap) => { ok: boolean; errors?: { level: string; message: string }[] };
   deleteToken: (category: TokenCategories, name: string) => void;
 }
 
@@ -59,14 +63,20 @@ export const useStore = create<StoreState>((set) => ({
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         tokens: { colors: {}, spacing: {}, radii: {}, shadows: {} },
+        typography: {
+          scaleConfig: { base: 16, ratio: 1.25 },
+          headingsMap: defaultHeadingsMap(generateTypeScale({ base: 16, ratio: 1.25 }))
+        },
       },
     })),
   addToken: (category, name, value) => {
-    let result = { ok: true as const } as { ok: boolean; errors?: string[] };
+    let result = { ok: true as const } as { ok: boolean; errors?: ValidationError[] };
     set((state) => {
       if (!state.currentProject) return state;
       const errors = validateToken(category, name, value);
-      if (state.currentProject.tokens[category as keyof TokensState][name]) errors.push('Duplicate name');
+      if (state.currentProject.tokens[category as keyof TokensState][name]) {
+        errors.push({ code: 'duplicate_name', field: 'name', message: 'Duplicate name' });
+      }
       if (errors.length) {
         result = { ok: false, errors };
         return state;
@@ -79,11 +89,13 @@ export const useStore = create<StoreState>((set) => ({
     return result;
   },
   updateToken: (category, name, value) => {
-    let result = { ok: true as const } as { ok: boolean; errors?: string[] };
+    let result = { ok: true as const } as { ok: boolean; errors?: ValidationError[] };
     set((state) => {
       if (!state.currentProject) return state;
       const errors = validateToken(category, name, value);
-      if (!state.currentProject.tokens[category as keyof TokensState][name]) errors.push('Not found');
+      if (!state.currentProject.tokens[category as keyof TokensState][name]) {
+        errors.push({ code: 'not_found', field: 'general', message: 'Token not found' });
+      }
       if (errors.length) {
         result = { ok: false, errors };
         return state;
@@ -91,6 +103,74 @@ export const useStore = create<StoreState>((set) => ({
       const project = { ...state.currentProject };
       project.tokens = { ...project.tokens, [category]: { ...project.tokens[category as keyof TokensState], [name]: value } } as TokensState;
       project.updatedAt = new Date().toISOString();
+      return { ...state, currentProject: project };
+    });
+    return result;
+  },
+  renameToken: (category, oldName, newName) => {
+    let result = { ok: true as const } as { ok: boolean; errors?: ValidationError[] };
+    set((state) => {
+      if (!state.currentProject) return state;
+      const tokens = state.currentProject.tokens[category as keyof TokensState];
+      const errors: ValidationError[] = [];
+      if (!tokens[oldName]) errors.push({ code: 'not_found', field: 'general', message: 'Original token not found' });
+      const nameErr = validateTokenName(newName); if (nameErr) errors.push(nameErr);
+      if (tokens[newName] && oldName !== newName) errors.push({ code: 'duplicate_name', field: 'name', message: 'Name already exists' });
+      if (errors.length) { result = { ok: false, errors }; return state; }
+      const project = { ...state.currentProject };
+      const newCat = { ...tokens } as Record<string,string>;
+      const value = newCat[oldName];
+      delete newCat[oldName];
+      newCat[newName] = value;
+      project.tokens = { ...project.tokens, [category]: newCat } as TokensState;
+      project.updatedAt = new Date().toISOString();
+      return { ...state, currentProject: project };
+    });
+    return result;
+  },
+  batchAddTokens: (category, entries) => {
+    let result = { ok: true as const } as { ok: boolean; errors?: ValidationError[] };
+    set((state) => {
+      if (!state.currentProject) return state;
+      const errors: ValidationError[] = [];
+      for (const [n, v] of Object.entries(entries)) {
+        validateToken(category, n, v).forEach(e => errors.push(e));
+        if (state.currentProject.tokens[category as keyof TokensState][n]) {
+          errors.push({ code: 'duplicate_name', field: 'name', message: `Duplicate existing: ${n}` });
+        }
+      }
+      if (errors.length) { result = { ok: false, errors }; return state; }
+      const project = { ...state.currentProject };
+      const newCat = { ...project.tokens[category as keyof TokensState] } as Record<string,string>;
+      for (const [n,v] of Object.entries(entries)) newCat[n] = v;
+      project.tokens = { ...project.tokens, [category]: newCat } as TokensState;
+      project.updatedAt = new Date().toISOString();
+      return { ...state, currentProject: project };
+    });
+    return result;
+  },
+  setPrefix: (prefix) => set((state) => {
+    if (!state.currentProject) return state;
+    return { ...state, currentProject: { ...state.currentProject, prefix, updatedAt: new Date().toISOString() } };
+  }),
+  updateTypeScale: (partial) => set((state) => {
+    if (!state.currentProject) return state;
+    const prev = state.currentProject.typography.scaleConfig;
+    const next: TypeScaleConfig = { ...prev, ...partial };
+    if (next.presets && next.presets.length === 0) delete next.presets;
+    const headingsMap = defaultHeadingsMap(generateTypeScale(next));
+    const project = { ...state.currentProject, typography: { scaleConfig: next, headingsMap }, updatedAt: new Date().toISOString() };
+    return { ...state, currentProject: project };
+  }),
+  setHeadingsMap: (map) => {
+    let result = { ok: true as const } as { ok: boolean; errors?: { level: string; message: string }[] };
+    set((state) => {
+      if (!state.currentProject) return state;
+      const steps = generateTypeScale(state.currentProject.typography.scaleConfig);
+      const available = steps.map(s => s.name);
+      const validation = validateHeadingsMap(map, available);
+      if (!validation.ok) { result = { ok: false, errors: validation.errors }; return state; }
+      const project = { ...state.currentProject, typography: { ...state.currentProject.typography, headingsMap: map }, updatedAt: new Date().toISOString() };
       return { ...state, currentProject: project };
     });
     return result;

@@ -1,0 +1,10 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "words": [
+    "sha256","rgba","rgb","rem","px","TypeScale","determinism","Zustand","nanoid","cssnano","postcss","minifier","stringify","radii","a11y","tsx","hashable","remap","typescale","precompute","precomputed"
+  ],
+  "ignorePaths": [
+    "node_modules","dist","coverage"
+  ]
+}

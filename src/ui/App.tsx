@@ -1,6 +1,7 @@
 import React from 'react';
 import { useStore } from '../state/store';
 import { TokenTable } from './components/TokenTable';
+import { TypographyEditor } from './components/TypographyEditor';
 
 export const App: React.FC = () => {
   const { currentProject, createProject } = useStore();
@@ -17,6 +18,7 @@ export const App: React.FC = () => {
           <TokenTable category="spacing" />
           <TokenTable category="radii" />
           <TokenTable category="shadows" />
+          <TypographyEditor />
         </>
       )}
     </div>
