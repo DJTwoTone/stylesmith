@@ -30,8 +30,8 @@
   --bp-ink: #0b3d91;
   --bp-ink-faint: #0b3d91cc;
   --bp-paper: #f7f5ec;
-  --bp-grid: rgba(11,61,145,.14);
-  --bp-grid-bold: rgba(11,61,145,.22);
+  --bp-grid: rgba(11, 61, 145, 0.14);
+  --bp-grid-bold: rgba(11, 61, 145, 0.22);
   --app-bg: var(--bp-paper);
   --app-fg: var(--bp-ink);
   --app-accent: #0b3d91;
@@ -39,11 +39,12 @@
 }
 
 .bp-dark {
-  --bp-ink:#f4f3ea;
-  --bp-ink-faint:#f4f3ea99;
-  --bp-paper:#0b3d91;
-  --bp-grid:rgba(244,243,234,.12);
-  --bp-grid-bold:rgba(244,243,234,.22);
+  --bp-ink: #f4f3ea;
+  --bp-ink-faint: #f4f3ea99;
+  --bp-paper: #0b3d91;
+  /* intensified offwhite grid for blueprint mode */
+  --bp-grid: rgba(244, 243, 234, 0.18);
+  --bp-grid-bold: rgba(244, 243, 234, 0.3);
   --app-bg: var(--bp-paper);
   --app-fg: var(--bp-ink);
   --app-accent: #f4f3ea;
@@ -60,8 +61,26 @@ body {
   line-height: 1.4;
   background: var(--app-bg);
   color: var(--app-fg);
-  transition: background .4s ease, color .4s ease;
+  transition: background 0.4s ease, color 0.4s ease;
+  position: relative;
+  min-height: 100vh;
 }
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 119px, var(--bp-grid-bold) 119px 120px),
+    repeating-linear-gradient(90deg, transparent 0 119px, var(--bp-grid-bold) 119px 120px),
+    repeating-linear-gradient(0deg, transparent 0 23px, var(--bp-grid) 23px 24px),
+    repeating-linear-gradient(90deg, transparent 0 23px, var(--bp-grid) 23px 24px);
+  mix-blend-mode: multiply;
+  opacity: 0.5;
+  transition: opacity 0.4s ease;
+}
+body.bp-dark::before { opacity: 0.42; }
 
 /* Utilities */
 .text-muted {
@@ -96,20 +115,61 @@ body {
 }
 
 /* App shell */
-.app-shell-header { position:sticky; top:0; z-index:40; backdrop-filter:blur(6px); background:linear-gradient(to right, color-mix(in oklab,var(--app-bg) 92%, transparent), color-mix(in oklab,var(--app-bg) 85%, transparent)); border-bottom:1px solid var(--ss-color-border-subtle); display:flex; align-items:center; gap:16px; padding:0 20px; height:var(--app-header-height); }
-.app-shell-header img { height:40px; width:auto; display:block; }
-.app-shell-title { font-family:'Barlow Condensed', system-ui,sans-serif; font-size:1.65rem; letter-spacing:.05em; margin:0; text-transform:uppercase; }
-.app-shell-spacer { flex:1; }
-.app-shell-btn { font-family:'IBM Plex Mono', ui-monospace, monospace; font-size:12px; border:1.5px solid currentColor; background:color-mix(in oklab, currentColor 8%, transparent); padding:.45rem .85rem; border-radius:10px; cursor:pointer; display:inline-flex; align-items:center; gap:.4ch; }
-.app-shell-btn:focus-visible { outline:2px solid currentColor; outline-offset:2px; }
-.app-shell-main { max-width:1200px; margin:0 auto; padding:24px clamp(16px,4vw,48px) 64px; }
+.app-shell-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  backdrop-filter: blur(6px);
+  background: linear-gradient(
+    to right,
+    color-mix(in oklab, var(--app-bg) 92%, transparent),
+    color-mix(in oklab, var(--app-bg) 85%, transparent)
+  );
+  border-bottom: 1px solid var(--ss-color-border-subtle);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 20px;
+  height: var(--app-header-height);
+}
+.app-shell-header img {
+  height: 40px;
+  width: auto;
+  display: block;
+}
+.app-shell-title {
+  font-family: 'Barlow Condensed', system-ui, sans-serif;
+  font-size: 1.65rem;
+  letter-spacing: 0.05em;
+  margin: 0;
+  text-transform: uppercase;
+}
+.app-shell-spacer {
+  flex: 1;
+}
+.app-shell-btn {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 12px;
+  border: 1.5px solid currentColor;
+  background: color-mix(in oklab, currentColor 8%, transparent);
+  padding: 0.45rem 0.85rem;
+  border-radius: 10px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4ch;
+}
+.app-shell-btn:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+.app-shell-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px clamp(16px, 4vw, 48px) 64px;
+}
 
-/* Subtle blueprint background grid for editor area */
-.bp-surface-grid { position:relative; }
-.bp-surface-grid:before { content:""; position:absolute; inset:0; pointer-events:none; background:
-  repeating-linear-gradient(0deg, transparent 0 23px, var(--bp-grid) 23px 24px),
-  repeating-linear-gradient(90deg, transparent 0 23px, var(--bp-grid) 23px 24px); mix-blend-mode:multiply; opacity:.35; }
-body.bp-dark .bp-surface-grid:before { opacity:.28; }
+/* Component-level grid removed; now global via body::before */
 
 /* Table normalization */
 .table-reset {
