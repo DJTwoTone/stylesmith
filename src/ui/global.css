@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
 /* Global StyleSmith base styles & design tokens */
 :root {
   /* Color tokens */
@@ -23,6 +25,28 @@
   --ss-fs-sm: 12px;
   --ss-fs-md: 13px;
   --ss-fs-base: 14px;
+
+  /* Blueprint theme (light) */
+  --bp-ink: #0b3d91;
+  --bp-ink-faint: #0b3d91cc;
+  --bp-paper: #f7f5ec;
+  --bp-grid: rgba(11,61,145,.14);
+  --bp-grid-bold: rgba(11,61,145,.22);
+  --app-bg: var(--bp-paper);
+  --app-fg: var(--bp-ink);
+  --app-accent: #0b3d91;
+  --app-header-height: 60px;
+}
+
+.bp-dark {
+  --bp-ink:#f4f3ea;
+  --bp-ink-faint:#f4f3ea99;
+  --bp-paper:#0b3d91;
+  --bp-grid:rgba(244,243,234,.12);
+  --bp-grid-bold:rgba(244,243,234,.22);
+  --app-bg: var(--bp-paper);
+  --app-fg: var(--bp-ink);
+  --app-accent: #f4f3ea;
 }
 
 html,
@@ -31,9 +55,12 @@ body {
   margin: 0;
 }
 body {
-  font-family: system-ui, sans-serif;
+  font-family: system-ui, 'Barlow Condensed', sans-serif;
   -webkit-font-smoothing: antialiased;
   line-height: 1.4;
+  background: var(--app-bg);
+  color: var(--app-fg);
+  transition: background .4s ease, color .4s ease;
 }
 
 /* Utilities */
@@ -67,6 +94,22 @@ body {
 .bg-error {
   background: var(--ss-color-bg-error);
 }
+
+/* App shell */
+.app-shell-header { position:sticky; top:0; z-index:40; backdrop-filter:blur(6px); background:linear-gradient(to right, color-mix(in oklab,var(--app-bg) 92%, transparent), color-mix(in oklab,var(--app-bg) 85%, transparent)); border-bottom:1px solid var(--ss-color-border-subtle); display:flex; align-items:center; gap:16px; padding:0 20px; height:var(--app-header-height); }
+.app-shell-header img { height:40px; width:auto; display:block; }
+.app-shell-title { font-family:'Barlow Condensed', system-ui,sans-serif; font-size:1.65rem; letter-spacing:.05em; margin:0; text-transform:uppercase; }
+.app-shell-spacer { flex:1; }
+.app-shell-btn { font-family:'IBM Plex Mono', ui-monospace, monospace; font-size:12px; border:1.5px solid currentColor; background:color-mix(in oklab, currentColor 8%, transparent); padding:.45rem .85rem; border-radius:10px; cursor:pointer; display:inline-flex; align-items:center; gap:.4ch; }
+.app-shell-btn:focus-visible { outline:2px solid currentColor; outline-offset:2px; }
+.app-shell-main { max-width:1200px; margin:0 auto; padding:24px clamp(16px,4vw,48px) 64px; }
+
+/* Subtle blueprint background grid for editor area */
+.bp-surface-grid { position:relative; }
+.bp-surface-grid:before { content:""; position:absolute; inset:0; pointer-events:none; background:
+  repeating-linear-gradient(0deg, transparent 0 23px, var(--bp-grid) 23px 24px),
+  repeating-linear-gradient(90deg, transparent 0 23px, var(--bp-grid) 23px 24px); mix-blend-mode:multiply; opacity:.35; }
+body.bp-dark .bp-surface-grid:before { opacity:.28; }
 
 /* Table normalization */
 .table-reset {

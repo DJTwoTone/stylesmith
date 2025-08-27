@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './Landing.module.css';
+import { BlueprintHero } from '../components/BlueprintHero';
 import { useStore } from '../../state/store';
 
 interface ProjectSummary { id: string; name: string; createdAt: string; updatedAt: string }
@@ -41,17 +42,11 @@ export const Landing: React.FC<{ onEnter: () => void; }> = ({ onEnter }) => {
 
   return (
     <main className={styles.landingRoot}>
-      <div className={styles.hero}>
-        <div className={styles.heroLogos}>
-          <img src="/logos/StyleSmithLogo-transparent.png" alt="StyleSmith logo" className={styles.logoImg} />
-        </div>
-        <h1 className={styles.tagline}>Deterministic design token & utility generation in under five minutes.</h1>
-        <p className={styles.subtitle}>StyleSmith lets you define a precise token set, toggle lean utility families, and export byte-stable CSS artifacts (tokens → utilities → optional components & docs) — all local-first, no account.</p>
-        <div className={styles.ctaRow}>
-          <button className={styles.ctaPrimary} onClick={handleCreate}>Create Project</button>
-          <button onClick={() => { setProjName('Sample Project'); handleCreate(); }}>Quick Start Sample</button>
-          <button onClick={() => { window.alert('Primer coming soon.'); }}>Learn Basics</button>
-        </div>
+      <BlueprintHero />
+      <div className={styles.ctaRow}>
+        <button className={styles.ctaPrimary} onClick={handleCreate}>Create Project</button>
+        <button onClick={() => { setProjName('Sample Project'); handleCreate(); }}>Quick Start Sample</button>
+        <button onClick={() => { window.alert('Primer coming soon.'); }}>Learn Basics</button>
       </div>
 
       {recent.length > 0 && (
