@@ -20,10 +20,15 @@ export const App: React.FC = () => {
   return (
     <>
       <header className="app-shell-header" role="banner">
-        <img src={blueprintMode ? '/logos/StyleSmithLogo-offwhite.png' : '/logos/StyleSmithLogo-blue.png'} alt="StyleSmith logo" />
-        <h1 className="app-shell-title">StyleSmith</h1>
-        <div className="app-shell-spacer" />
-        <button className="app-shell-btn" onClick={() => setBlueprintMode(m => !m)} aria-pressed={blueprintMode}>{blueprintMode ? 'Light Sheet' : 'Blueprint Mode'}</button>
+        <div className="app-shell-left" style={{display:'flex', alignItems:'center', gap:12}}>
+          <img src={blueprintMode ? '/logos/StyleSmithLogo-offwhite.png' : '/logos/StyleSmithLogo-blue.png'} alt="StyleSmith logo" />
+          <h1 className="app-shell-title" style={{margin:0}}>StyleSmith</h1>
+          {currentProject && <span className="app-shell-project" style={{fontFamily:'IBM Plex Mono, ui-monospace, monospace', fontSize:12, opacity:.85}}>• {currentProject.name}</span>}
+        </div>
+        <div className="app-shell-actions" style={{display:'flex', gap:12}}>
+          <button className="app-shell-btn" onClick={() => setEntered(false)} aria-label="Projects" title="Projects">Projects</button>
+          <button className="app-shell-btn" onClick={() => setBlueprintMode(m => !m)} aria-pressed={blueprintMode}>{blueprintMode ? 'Light Sheet' : 'Blueprint Mode'}</button>
+        </div>
       </header>
       <main className="app-shell-main bp-surface-grid" role="main">
         <p className={styles.projectMeta}>{currentProject ? `Project: ${currentProject.name}` : 'No project yet.'}</p>
